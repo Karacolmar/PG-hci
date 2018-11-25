@@ -2,7 +2,7 @@
 
 import wx
 import Statistics
-import MainPan
+import Drill
 
 class FiredrillFrame(wx.Frame):
 
@@ -16,7 +16,7 @@ class FiredrillFrame(wx.Frame):
         # create a menu bar
         self.makeMenuBar()
  
-        self.mainPanel = MainPan.MainPanel(self)
+        self.mainPanel = Drill.DrillPanel(self)
         self.statPanel=Statistics.StatisticsPanel(self)
         self.statPanel.Hide()
 

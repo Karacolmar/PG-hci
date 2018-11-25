@@ -1,7 +1,10 @@
-import wx
-import FiredrillFrame
+'''
+Handles the main panel of the app -> start new Drill etc
+'''
 
-class MainPanel(wx.Panel):
+import wx
+
+class DrillPanel(wx.Panel):
 
     def __init__(self, parent):
         
@@ -29,7 +32,7 @@ class MainPanel(wx.Panel):
         
     def OnStartDrill(self,event):
         dlg = wx.MessageDialog(self, "Which scenario do you want to train?", "Start a new Drill", wx.YES_NO|wx.CANCEL)
-        dlg.SetYesNoLabels("&Update Scenario", "&Database")
+        dlg.SetYesNoLabels("&Update", "&Database")
         response = dlg.ShowModal()
         # Update case
         if response == wx.ID_YES:

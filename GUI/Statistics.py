@@ -3,7 +3,6 @@ Statistics handler. Stores past times, able to display them, etc.
 '''
 
 import wx
-import FiredrillFrame
 
 class StatisticsPanel(wx.Panel):
 
