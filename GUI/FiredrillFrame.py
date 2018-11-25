@@ -20,35 +20,45 @@ class FiredrillFrame(wx.Frame):
 
         # create a menu bar
         self.makeMenuBar()
-        self.makeButtons()
+        self.makeButtons(pnl)
 
-    def makeButtons(self):
-        startDrillButton = wx.Button(self, wx.ID_ANY, "Start new firedrill", pos=(25,60))
-        endDrillButton = wx.Button(self, wx.ID_ANY, "End firedrill", pos=(25,90))
-        hintButton = wx.Button(self,wx.ID_ANY, "Hint",pos=(25,120))
+    def makeButtons(self,panel):
+        startDrillButton = wx.Button(panel, wx.ID_ANY, "Start new firedrill", pos=(25,60))
+        endDrillButton = wx.Button(panel, wx.ID_ANY, "End firedrill", pos=(25,90))
+        hintButton = wx.Button(panel,wx.ID_ANY, "Hint",pos=(25,120))
 
         self.Bind(wx.EVT_BUTTON, self.OnStartDrill, startDrillButton)
+        self.Bind(wx.EVT_BUTTON, self.OnEndDrill, endDrillButton)
         
     def OnStartDrill(self,event):
-        dlg = wx.MessageDialog(self,"Something in your system broke. Find out what it is! Time is running...")
-        dlg.ShowModal()
-        # starts Stop Watch
-        self.watch = wx.StopWatch()
-
+        dlg = wx.MessageDialog(self,"Something in your system broke. Find out what it is!")
+        response = dlg.ShowModal()
+        if response==wx.ID_OK:
+            # starts Stop Watch
+            self.watch = wx.StopWatch()
+            print("Started StopWatch.")
 
     def OnEndDrill(self,event):
-        watch.Pause()
-        dlg = wx.MessageDialog(self,"Checking whether your fix was successful...",caption = "Checking...")
-        dlg.ShowModal()
-        # replace with call to checkSystemFixed-bash script
-        time.sleep(10)
-        dlg.wx.MessageDialog(self,"Your system is alright!")
-        dlg.ShowModal()
+        try:
+            self.watch.Pause()
+            dlg = wx.MessageDialog(self,"Checking whether your fix was successful...","Checking...",wx.CANCEL)
+            wait = dlg.ShowModal()
+            if wait==wx.ID_CANCEL:
+                self.watch.Resume()
+            else:
+                # replace with call to checkSystemFixed-bash script
+                wx.CallLater(3000,self.endOfDrill)
+        except AttributeError:
+            wx.MessageBox(self,"You have not started a firedrill yet.", "Error", wx.OK | wx.ICON_ERROR)
 
-
-
-
-
+    def endOfDrill(self):
+        dlg=wx.MessageDialog(self,"Your system is back to normal.","Well done", wx.HELP)
+        dlg.SetHelpLabel("&Display Time")
+        response = dlg.ShowModal()
+        self.curTime = self.watch.Time()
+        print self.curTime  
+        if  response==wx.ID_HELP:
+            wx.MessageBox("It took you {} milliseconds.".format(self.curTime))
 
 
     def makeMenuBar(self):
