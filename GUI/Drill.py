@@ -71,6 +71,9 @@ class DrillPanel(wx.Panel):
         dlg=wx.MessageDialog(self,"Your system is back to normal.","Well done", wx.HELP)
         dlg.SetHelpLabel("&Display Time")
         response = dlg.ShowModal()
+        self.Update = False
+        self.Database = False
+        self.hintButton.Disable()
         self.curTime = self.watch.Time()
         print self.curTime  
         if  response==wx.ID_HELP:
