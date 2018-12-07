@@ -3,6 +3,7 @@ Handles the main panel of the app -> start new Drill etc
 '''
 
 import wx
+import Statistics
 
 class DrillPanel(wx.Panel):
 
@@ -16,14 +17,15 @@ class DrillPanel(wx.Panel):
         self.makeButtons()
 
     def makeButtons(self):
-        startDrillButton = wx.Button(self, wx.ID_ANY, "Start new firedrill", pos=(25,150))
-        endDrillButton = wx.Button(self, wx.ID_ANY, "End firedrill", pos=(25,200))
+        self.startDrillButton = wx.Button(self, wx.ID_ANY, "Start new Firedrill", pos=(25,150))
+        self.endDrillButton = wx.Button(self, wx.ID_ANY, "End running Firedrill", pos=(25,200))
         self.hintButton = wx.Button(self,wx.ID_ANY, "Hint",pos=(25,250))
 
-        self.Bind(wx.EVT_BUTTON, self.OnStartDrill, startDrillButton)
-        self.Bind(wx.EVT_BUTTON, self.OnEndDrill, endDrillButton)
+        self.Bind(wx.EVT_BUTTON, self.OnStartDrill, self.startDrillButton)
+        self.Bind(wx.EVT_BUTTON, self.OnEndDrill, self.endDrillButton)
         self.Bind(wx.EVT_BUTTON, self.OnHint, self.hintButton)
         self.hintButton.Disable()
+        self.endDrillButton.Disable()
 
     # Supposed to get the right UseCase, display according hints
     def OnHint(self,event):
@@ -36,13 +38,11 @@ class DrillPanel(wx.Panel):
         response = dlg.ShowModal()
         # Update case
         if response == wx.ID_YES:
-            self.Database = False
-            self.Update = True
+            self.scenario = 1
             self.startDrill()
         # Database case
         elif response == wx.ID_NO:
-            self.Update = False
-            self.Database = True
+            self.scenario = 2
             self.startDrill()
 
     def startDrill(self):
@@ -53,6 +53,8 @@ class DrillPanel(wx.Panel):
             self.watch = wx.StopWatch()
             print("Started StopWatch.")
             self.hintButton.Enable()
+            self.endDrillButton.Enable()
+            self.startDrillButton.Disable()
 
     def OnEndDrill(self,event):
         try:
@@ -71,12 +73,14 @@ class DrillPanel(wx.Panel):
         dlg=wx.MessageDialog(self,"Your system is back to normal.","Well done", wx.HELP)
         dlg.SetHelpLabel("&Display Time")
         response = dlg.ShowModal()
-        self.Update = False
-        self.Database = False
         self.hintButton.Disable()
+        self.endDrillButton.Disable()
         self.curTime = self.watch.Time()
+        Statistics.sendStats(self.scenario,self.curTime)
+        self.scenario = 0
         print self.curTime  
         if  response==wx.ID_HELP:
-            wx.MessageBox("It took you {} hours, {} minutes and {} seconds.".format((self.curTime/3600000)%24,(self.curTime/60000)%60,(self.curTime/1000)%60))
+            wx.MessageBox(self,"It took you {} hours, {} minutes and {} seconds.".format((self.curTime/3600000)%24,(self.curTime/60000)%60,(self.curTime/1000)%60))
+
 
 

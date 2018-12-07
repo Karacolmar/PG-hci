@@ -3,6 +3,36 @@ Statistics handler. Stores past times, able to display them, etc.
 '''
 
 import wx
+import jsonpickle
+import sys
+import matplotlib.pyplot as plt
+
+class Stat(object):
+    def __init__ (self,scenario,time):
+        self.scenario = scenario
+        self.time = time
+
+# PATH NOT SPECIFIED, DOES NOT WORK LIKE THIS
+def sendStats(scenario,time):
+    curStat = Stat(scenario,time)
+    resf = open("/path/to/shared/folder/statistics.json", 'w')
+    jsonpickle.set_encoder_options('json', indent = 0)
+    resf.write(jsonpickle.encode(curStat))
+
+def makeGraph():
+    f = open("/path/to/shared/folder/statistics.json",'rb')
+    json_str = f.read()
+    try:
+        dec_stats = jsonpickle.decode(json_str)
+    except:
+        sys.stderr.write('Could not decode the statistics file.\n')
+        return
+    # DO STUFF HERE
+
+
+
+
+
 
 class StatisticsPanel(wx.Panel):
 
