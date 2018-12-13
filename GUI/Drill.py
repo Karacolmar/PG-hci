@@ -4,6 +4,7 @@ Handles the main panel of the app -> start new Drill etc
 
 import wx
 import Statistics
+import Scenario
 
 class DrillPanel(wx.Panel):
 
@@ -11,76 +12,38 @@ class DrillPanel(wx.Panel):
         
         wx.Panel.__init__ ( self, parent, id = wx.ID_ANY, pos = wx.DefaultPosition, size=parent.GetSize(), style = wx.TAB_TRAVERSAL )
 
-        self.Database = False
-        self.Update = False
+        self.parent = parent
 
         self.makeButtons()
 
     def makeButtons(self):
-        self.startDrillButton = wx.Button(self, wx.ID_ANY, "Start new Firedrill", pos=(25,150))
-        self.endDrillButton = wx.Button(self, wx.ID_ANY, "End running Firedrill", pos=(25,200))
-        self.hintButton = wx.Button(self,wx.ID_ANY, "Hint",pos=(25,250))
+        self.startDrill1Button = wx.Button(self, wx.ID_ANY, "Szenario 1", pos=(50,250))
+        self.startDrill2Button = wx.Button(self,wx.ID_ANY, "Szenario 2", pos=(150,250))
+        self.startDrill3Button = wx.Button(self,wx.ID_ANY, "Szenario 3", pos=(250,250))
+        self.exploreButton = wx.Button(self,wx.ID_ANY,"Lerne Oracle kennen", pos=(50,150))
 
-        self.Bind(wx.EVT_BUTTON, self.OnStartDrill, self.startDrillButton)
-        self.Bind(wx.EVT_BUTTON, self.OnEndDrill, self.endDrillButton)
-        self.Bind(wx.EVT_BUTTON, self.OnHint, self.hintButton)
-        self.hintButton.Disable()
-        self.endDrillButton.Disable()
+        # maybe it is not possible to get which button was pressed - then we need three managing functions for this stuff
+        self.Bind(wx.EVT_BUTTON, self.OnStartDrill, self.startDrill1Button)
+        self.Bind(wx.EVT_BUTTON, self.OnStartDrill, self.startDrill2Button)
+        self.Bind(wx.EVT_BUTTON, self.OnStartDrill, self.startDrill3Button)
+        self.Bind(wx.EVT_BUTTON, self.OnExplore, self.exploreButton)
 
-    # Supposed to get the right UseCase, display according hints
-    def OnHint(self,event):
-        if self.Update or self.Database:
-            wx.MessageBox("Start by looking into the logs...")
+    # Einfuehrungsding von Leo
+    def OnExplore(self,event):
+        wx.MessageBox("This will be possible soon.")
         
     def OnStartDrill(self,event):
-        dlg = wx.MessageDialog(self, "Which scenario do you want to train?", "Start a new Drill", wx.YES_NO|wx.CANCEL)
-        dlg.SetYesNoLabels("&Update", "&Database")
-        response = dlg.ShowModal()
-        # Update case
-        if response == wx.ID_YES:
-            self.scenario = 1
-            self.startDrill()
-        # Database case
-        elif response == wx.ID_NO:
-            self.scenario = 2
-            self.startDrill()
+        which = event.GetEventObject().GetLabel()
+        if "1" in which:
+            self.parent.scenario = 1
+        elif "2" in which:
+            self.parent.scenario = 2
+        elif "3" in which:
+            self.parent.scenario = 3        
+        self.startDrill()
 
     def startDrill(self):
-        dlg = wx.MessageDialog(self,"Something in your system broke. Find out what it is!")
-        response = dlg.ShowModal()
-        if response==wx.ID_OK:
-            # starts Stop Watch
-            self.watch = wx.StopWatch()
-            print("Started StopWatch.")
-            self.hintButton.Enable()
-            self.endDrillButton.Enable()
-            self.startDrillButton.Disable()
-
-    def OnEndDrill(self,event):
-        try:
-            self.watch.Pause()
-            dlg = wx.MessageDialog(self,"Checking whether your fix was successful...","Checking...",wx.CANCEL)
-            wait = dlg.ShowModal()
-            if wait==wx.ID_CANCEL:
-                self.watch.Resume()
-            else:
-                # replace with call to checkSystemFixed-bash script
-                wx.CallLater(1500,self.endOfDrill)
-        except AttributeError:
-            wx.MessageBox(self,"You have not started a firedrill yet.", "Error", wx.OK | wx.ICON_ERROR)
-
-    def endOfDrill(self):
-        dlg=wx.MessageDialog(self,"Your system is back to normal.","Well done", wx.HELP)
-        dlg.SetHelpLabel("&Display Time")
-        response = dlg.ShowModal()
-        self.hintButton.Disable()
-        self.endDrillButton.Disable()
-        self.curTime = self.watch.Time()
-        Statistics.sendStats(self.scenario,self.curTime)
-        self.scenario = 0
-        print self.curTime  
-        if  response==wx.ID_HELP:
-            wx.MessageBox(self,"It took you {} hours, {} minutes and {} seconds.".format((self.curTime/3600000)%24,(self.curTime/60000)%60,(self.curTime/1000)%60))
-
+        self.scenarioPanel=Scenario.ScenarioPanel(self.parent)
+        self.scenarioPanel.Show()
 
 

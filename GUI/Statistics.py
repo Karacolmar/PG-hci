@@ -30,10 +30,6 @@ def makeGraph():
     # DO STUFF HERE
 
 
-
-
-
-
 class StatisticsPanel(wx.Panel):
 
     def __init__(self, parent):
@@ -42,15 +38,15 @@ class StatisticsPanel(wx.Panel):
 
         self.parent=parent
 
+        # replace by loading stuff
         image = wx.Image('stat_demo.png',wx.BITMAP_TYPE_PNG)
         imageBitmap = wx.StaticBitmap(self,wx.ID_ANY,wx.BitmapFromImage(image))
 
-        backButton = wx.Button(self, wx.ID_ANY, "Back", pos=(25,375))
+        backButton = wx.Button(self, wx.ID_ANY, "Zurueck", pos=(25,400))
         self.Bind(wx.EVT_BUTTON, self.OnBack, backButton)
 
     def OnBack(self,event):
         self.Hide()
-        self.parent.mainPanel.Show()
 
 
 

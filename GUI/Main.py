@@ -3,6 +3,7 @@
 import wx
 import Statistics
 import Drill
+import Scenario
 
 class FiredrillFrame(wx.Frame):
 
@@ -13,11 +14,13 @@ class FiredrillFrame(wx.Frame):
         self.SetSize((600, 500))
         self.Centre()
 
+        self.scenario = 0
+
         # create a menu bar
         self.makeMenuBar()
  
         self.mainPanel = Drill.DrillPanel(self)
-        self.statPanel=Statistics.StatisticsPanel(self)
+        self.statPanel=Statistics.StatisticsPanel(self)        
         self.statPanel.Hide()
 
     def makeMenuBar(self):
@@ -25,7 +28,7 @@ class FiredrillFrame(wx.Frame):
         # helloItem = fileMenu.Append(-1, "&Hello...\tCtrl-H","Help string shown in status bar for this menu item")
 
         statsMenu = wx.Menu()
-        timesItem = statsMenu.Append(wx.ID_ANY, "&Display Statistics...\tCtrl-D")
+        timesItem = statsMenu.Append(wx.ID_ANY, "&Statistik anzeigen...\tCtrl-D")
 
         helpMenu = wx.Menu()
         aboutItem = helpMenu.Append(wx.ID_ABOUT)
@@ -33,8 +36,8 @@ class FiredrillFrame(wx.Frame):
         exitItem = helpMenu.Append(wx.ID_EXIT)
 
         menuBar = wx.MenuBar()
-        menuBar.Append(statsMenu, "&Statistics")
-        menuBar.Append(helpMenu, "&Help")
+        menuBar.Append(statsMenu, "&Statistik")
+        menuBar.Append(helpMenu, "&Hilfe")
 
         # Give the menu bar to the frame
         self.SetMenuBar(menuBar)
@@ -48,7 +51,6 @@ class FiredrillFrame(wx.Frame):
 
     def OnTimes(self,event):
         # Supposed to display new frame/module/etc showing statistics of different kinds?
-        self.mainPanel.Hide()
         self.statPanel.Show()
 
 
