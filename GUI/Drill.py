@@ -18,8 +18,8 @@ class DrillPanel(wx.Panel):
 
     def makeButtons(self):
         self.startDrill1Button = wx.Button(self, wx.ID_ANY, "Verbindungsprobleme", pos=(50,250))
-        self.startDrill2Button = wx.Button(self,wx.ID_ANY, "fehlendes Datenfile", pos=(150,250))
-        self.startDrill3Button = wx.Button(self,wx.ID_ANY, "Tablespace", pos=(250,250))
+        self.startDrill2Button = wx.Button(self,wx.ID_ANY, "fehlendes Datenfile", pos=(200,250))
+        self.startDrill3Button = wx.Button(self,wx.ID_ANY, "Tablespace", pos=(350,250))
         self.exploreButton = wx.Button(self,wx.ID_ANY,"Lerne Oracle kennen", pos=(50,150))
 
         # maybe it is not possible to get which button was pressed - then we need three managing functions for this stuff
