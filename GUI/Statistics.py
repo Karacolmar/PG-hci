@@ -20,7 +20,12 @@ class Stat(object):
 
 def sendStats(scenario,time):
     curStat = Stat(scenario,time)
-    f = open(STORE_PATH+"/stats.json", 'ab+')
+    try:
+        f = open(STORE_PATH+"/stats.json", 'ab+')
+    except:
+        wx.MessageBox("The shared folder path is not specified yet. Please change that in the source code.")
+        return
+    # append Stat to json file (has to be done manually)
     f.seek(0,2)                                #Go to the end of file    
     if f.tell() == 0 :                         #Check if file is empty
         f.write(jsonpickle.encode([curStat]))      #If empty, write an array
@@ -35,7 +40,11 @@ def sendStats(scenario,time):
 def makeGraph():
 
     # decode collected stats from json file
-    f = open(STORE_PATH+"/stats.json",'rb')
+    try:
+        f = open(STORE_PATH+"/stats.json",'rb')
+    except:
+        wx.MessageBox("The shared folder path is not specified yet. Please change that in the source code.")
+        return
     json_str = f.read()
     try:
         dec_stats = jsonpickle.decode(json_str)
