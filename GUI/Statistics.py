@@ -86,8 +86,6 @@ class StatisticsPanel(wx.Panel):
 
         self.parent=parent
 
-        # self.Update()
-
         backButton = wx.Button(self, wx.ID_ANY, "Zurueck", pos=(25,490))
         self.Bind(wx.EVT_BUTTON, self.OnBack, backButton)
 
@@ -95,9 +93,12 @@ class StatisticsPanel(wx.Panel):
         self.Hide()
 
     def Update(self):
-        makeGraph()
-        image = wx.Image(STORE_PATH+"/graph.png",wx.BITMAP_TYPE_PNG)
-        wx.StaticBitmap(self,wx.ID_ANY,wx.BitmapFromImage(image))
+        try:
+            makeGraph()
+            image = wx.Image(STORE_PATH+"/graph.png",wx.BITMAP_TYPE_PNG)
+            wx.StaticBitmap(self,wx.ID_ANY,wx.BitmapFromImage(image))
+        except:
+            wx.MessageBox("Unfortunately, there is no data to display. Run a drill first!")
 
 
     
