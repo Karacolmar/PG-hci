@@ -95,9 +95,8 @@ class ScenarioPanel(wx.Panel):
         dlg.SetHelpLabel("&Benoetigte Zeit anzeigen")
         response = dlg.ShowModal()
         # put back in when working
-        # Statistics.sendStats(self.parent.scenario,self.curTime)
+        Statistics.sendStats(self.parent.scenario,self.curTime)
         self.parent.scenario = 0
-        print self.parent.scenario
         print self.curTime  
         if  response==wx.ID_HELP:
             wx.MessageBox("Das hat {} Stunden, {} Minuten und {} Sekunden gedauert.".format((self.curTime/3600000)%24,(self.curTime/60000)%60,(self.curTime/1000)%60))

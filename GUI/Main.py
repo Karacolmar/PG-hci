@@ -11,7 +11,7 @@ class FiredrillFrame(wx.Frame):
         # ensure the parent's __init__ is called
         super(FiredrillFrame, self).__init__(*args, **kw)
 
-        self.SetSize((600, 500))
+        self.SetSize((680, 580))
         self.Centre()
 
         self.scenario = 0
@@ -25,7 +25,7 @@ class FiredrillFrame(wx.Frame):
 
     def makeMenuBar(self):
         # The "\t..." syntax defines an accelerator key that also triggers the same event:
-        # helloItem = fileMenu.Append(-1, "&Hello...\tCtrl-H","Help string shown in status bar for this menu item")
+        # helloItem = fileMenu.Append(-1, "&Hello...\tCtrl-H","Help string shown i400 status bar for this menu item")
 
         statsMenu = wx.Menu()
         timesItem = statsMenu.Append(wx.ID_ANY, "&Statistik anzeigen...\tCtrl-D")
@@ -51,6 +51,7 @@ class FiredrillFrame(wx.Frame):
 
     def OnTimes(self,event):
         # Supposed to display new frame/module/etc showing statistics of different kinds?
+        self.statPanel.Update()
         self.statPanel.Show()
 
 
