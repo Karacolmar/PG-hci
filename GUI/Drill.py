@@ -30,8 +30,113 @@ class DrillPanel(wx.Panel):
 
     # Einfuehrungsding von Leo
     def OnExplore(self,event):
-        wx.MessageBox("This will be possible soon.")
-        
+	def IntroDialog(Intro):
+		frame = wx.Frame(None, -1, 'win.py')
+		frame.SetDimensions(0,0,200,50)
+		x = ""
+		# Installationspfad
+		if Intro == 1:
+			dlg = wx.TextEntryDialog(frame, 'Finden Sie heraus wo Oracle installiert wurde','Einleitung 1/4')
+			dlg.SetValue("C:\\")
+			result = dlg.ShowModal()
+			if result == wx.ID_OK:
+			    print('## Einleitung: 1/4 : %s' % dlg.GetValue())
+			    x = dlg.GetValue()
+			else:
+			    return result
+
+		#Homeverzeichnis
+		if Intro == 2:
+			dlg = wx.TextEntryDialog(frame, 'Wo liegt das Homeverzeichnis unserer Datenbank?','Einleitung 2/4')
+			dlg.SetValue("C:\\app\\ora12")
+			result = dlg.ShowModal()
+			if result == wx.ID_OK:
+			    print "ok"
+			    x = dlg.GetValue()
+			    print('## Einleitung: 2/4 : %s' % x)
+			else:
+			    return result
+
+		#Datentypen
+		if Intro == 3:
+			dlg = wx.TextEntryDialog(frame, 'Wo liegen die menschenlesbaren Controlfiles?','Einleitung 3/4')
+			dlg.SetValue("C:\\app\\ora12")
+			result = dlg.ShowModal()
+			if result == wx.ID_OK:
+			    x = dlg.GetValue()
+			    print('## Einleitung: 3/4 : %s' % x)
+			else:
+			    return result
+
+		#Speicher
+		if Intro == 4:
+			dlg = wx.TextEntryDialog(frame, 'Wie viele MB Speicher hat unser Tablespace (abgerundet)?','Einleitung 4/4')
+			dlg.SetValue("1024")
+			result = dlg.ShowModal()
+			if result == wx.ID_OK:
+			    x = dlg.GetValue()
+			    print('## Einleitung: 4/4 : %s' % x)
+			else:
+			    return result
+		if Intro == 5:
+		#mehr erwuenscht?
+			return "MEHR"
+		dlg.Destroy()
+		return x
+
+        dlg = wx.MessageDialog(self, "Es folgt eine kurze allgemeine Einleitung in Oracle",'Einleitung',wx.CANCEL | wx.ICON_INFORMATION)
+	result = dlg.ShowModal()
+	 
+	if result == wx.ID_OK:
+		wx.MessageBox("Bei Oracle wird in Instanzen und Datenbanken getrennt.\nMehrere Versionen von Oracle koennen installiert und ueber verschiedene Instanzen benutzt werden.\nDer Name der Instanz ist innerhalb unseres Firedrills die SID",'Einleitung 1/4', wx.OK)
+		while 1:
+			Pfad = IntroDialog(1)	    	
+			if  Pfad == "C:\\app\\ora12":
+				print "## Einleitung: Installationspfad OK\n"
+				
+				break	
+			if Pfad == wx.ID_CANCEL:
+				print "## Einleitung: 1/4 Abbruch\n"
+				return
+		wx.MessageBox("Unterordner:\n\\product - Das ist der Ordner der installierten Datenbanken.\n\\inventory - Der Datenspeicherort \n\\admin - Hier liegen die Parameterfiles(pfile) und man kann Justierungen an den Instanzen vornehmen. \n\\diag - Speicherort der Logs und Traces.",'Einleitung 2/4', wx.OK)
+		
+		while 2:
+			Pfad = IntroDialog(2)
+			if  Pfad == "C:\\app\\ora12":
+				print "## Einleitung: OracleHome OK\n"
+				
+				break
+			if Pfad == wx.ID_CANCEL:
+				print "## Einleitung: 2/4 Abbruch\n"
+				return	
+		wx.MessageBox("5 wichtige Dateitypen\nDatafiles: Daten\nControlfiles: 2-3 je Installation, in verschiedenen Orten (menschenlesbar: pfiles)\nRedologfiles: Transaktionsfiles als Rollbackanleitung\nAchivelogfiles: archivierte Redologfiles, Lebensdauer ist bis Vollsicherung\nTracefiles: andere Logdateien",'Einleitung 3/4', wx.OK)
+
+		while 3:
+			Pfad = IntroDialog(3)
+			if  Pfad == "C:\\app\\ora12":
+				print "## Einleitung: pfilespfad OK\n"
+				
+				break
+		if Pfad == wx.ID_CANCEL:
+				print "## Einleitung: 3/4 Abbruch\n"
+				return
+		wx.MessageBox("Oracle hat seine eigene Speicherstruktur, was es Betriebssystemuebergreifend macht.\nDie kleinste Einheit ist ein OSBlock = 4KB.\nDanach gibt es die Oraclebloecke, Extents, Segments und den Tablespace.\nTablespaces definieren die Datenmenge der Instanz und werden normalerweise nach einem Muster (Bspw.: \"dfSID01.dbf\") nummeriert",'Einleitung 4/4', wx.OK)
+		while 4:
+			Pfad = IntroDialog(4)
+			if  Pfad == "1024":
+				print "## Einleitung: Speicher OK\n"
+				
+				break
+		if Pfad == wx.ID_CANCEL:
+				print "## Einleitung: 4/4 Abbruch\n"
+				return	
+	else:
+		print "## Einleitung: 0/4 Abbruch"
+	        return
+		
+	print "## Einleitung: erfolgreich beendet"
+        return
+
     def OnViewDrill(self,event):
         self.parent.scenario = event.GetId()
         self.scenarioPanel=Scenario.ScenarioPanel(self.parent)
