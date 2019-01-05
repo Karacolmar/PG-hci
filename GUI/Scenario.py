@@ -124,12 +124,13 @@ class ScenarioPanel(wx.Panel):
         self.endDrillButton.Disable()
         self.backButton.Enable()
         self.startDrillButton.Enable()
+        self.stopButton.Disable()
         self.curTime = self.watch.Time()
         dlg=wx.MessageDialog(self,"Das System ist wieder in Ordnung.","In Ordnung", wx.HELP)
         dlg.SetHelpLabel("&Benoetigte Zeit anzeigen")
         response = dlg.ShowModal()
 
-        Statistics.sendStats(self.parent.scenario,self.curTime)
+        Statistics.sendStats(self,self.parent.scenario,self.curTime)
         self.parent.scenario = 0
         print self.curTime  
         if  response==wx.ID_HELP:
