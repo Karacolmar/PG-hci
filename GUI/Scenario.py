@@ -136,7 +136,12 @@ class ScenarioPanel(wx.Panel):
         self.endDrillButton.Disable()
         self.backButton.Enable()
         self.startDrillButton.Enable()
+        path = os.path.join('scenarios', str(self.scenario), 'fix.bat')
+        print path
+        out = subprocess.check_output(path,shell=True)
+        print out
         self.parent.scenario = 0
+        wx.MessageBox("Der Originalzustand des Systems ist wiederhergestellt.")
 
     def OnBack(self,event):
         self.parent.scenario = 0
