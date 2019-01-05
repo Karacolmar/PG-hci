@@ -98,12 +98,24 @@ class ScenarioPanel(wx.Panel):
             if wait==wx.ID_CANCEL:
                 self.watch.Resume()
             else:
-                # replace with call to checkSystemFixed-bash script
-                wx.CallLater(1500,self.endOfDrill)
+                path = os.path.join('scenarios', str(self.scenario), 'checkSystem.bat')
+                print path
+                out = subprocess.check_output(path,shell=True)
+                print out
+                # one might want to change this?
+                if "True" in out:
+                    self.endOfDrillSuccess()
+                else:
+                    dlg = wx.MessageDialog(self,"Das System ist noch nicht wieder in Ordnung. Probiere es mal anders.","Ueberpruefung...",wx.CANCEL)
+                    wait = dlg.ShowModal()
+                    if wait==wx.ID_CANCEL:
+                        self.endOfDrillFailed()
+                    else:
+                        self.watch.Resume()
         except AttributeError:
             wx.MessageBox(self,"Es laeuft kein Firedrill.", "Fehler", wx.OK | wx.ICON_ERROR)
 
-    def endOfDrill(self):
+    def endOfDrillSuccess(self):
         self.hintButton.Disable()
         self.endDrillButton.Disable()
         self.backButton.Enable()
@@ -112,12 +124,19 @@ class ScenarioPanel(wx.Panel):
         dlg=wx.MessageDialog(self,"Das System ist wieder in Ordnung.","In Ordnung", wx.HELP)
         dlg.SetHelpLabel("&Benoetigte Zeit anzeigen")
         response = dlg.ShowModal()
-        # put back in when working
+
         Statistics.sendStats(self.parent.scenario,self.curTime)
         self.parent.scenario = 0
         print self.curTime  
         if  response==wx.ID_HELP:
             wx.MessageBox("Das hat {} Stunden, {} Minuten und {} Sekunden gedauert.".format((self.curTime/3600000)%24,(self.curTime/60000)%60,(self.curTime/1000)%60))
+
+    def endOfDrillFailed(self):
+        self.hintButton.Disable()
+        self.endDrillButton.Disable()
+        self.backButton.Enable()
+        self.startDrillButton.Enable()
+        self.parent.scenario = 0
 
     def OnBack(self,event):
         self.parent.scenario = 0
