@@ -36,13 +36,16 @@ class ScenarioPanel(wx.Panel):
         self.endDrillButton = wx.Button(self, wx.ID_ANY, "Firedrill beenden", pos=(200,100))
         self.hintButton = wx.Button(self,wx.ID_ANY, "Hinweis",pos=(375,100))
         self.backButton = wx.Button(self,wx.ID_ANY, "Zurueck", pos=(25,400))
+        self.stopButton = wx.Button(self,wx.ID_ANY, "Drill abbrechen", pos = (25,135))
 
         self.Bind(wx.EVT_BUTTON, self.OnStartDrill, self.startDrillButton)
         self.Bind(wx.EVT_BUTTON, self.OnEndDrill, self.endDrillButton)
         self.Bind(wx.EVT_BUTTON, self.OnHint, self.hintButton)
         self.Bind(wx.EVT_BUTTON, self.OnBack, self.backButton)
+        self.Bind(wx.EVT_BUTTON, self.OnStop, self.stopButton)
         self.hintButton.Disable()
         self.endDrillButton.Disable()
+        self.stopButton.Hide()
 
     def loadJSON(self):
         # decode scenario info from json file
@@ -65,7 +68,7 @@ class ScenarioPanel(wx.Panel):
     def OnHint(self,event):
         if self.noHints>=0:
             text = self.hints[self.noHints]
-            wx.StaticText(self,-1,label = text, pos = (25,(150+self.noHints*25)))
+            wx.StaticText(self,-1,label = text, pos = (25,(175+self.noHints*25)))
             # no more hints
             if len(self.hints)==(self.noHints+1):
                 self.noHints=-1
@@ -89,6 +92,7 @@ class ScenarioPanel(wx.Panel):
             self.endDrillButton.Enable()
             self.startDrillButton.Disable()
             self.backButton.Disable()
+            self.stopButton.Show()
 
     def OnEndDrill(self,event):
         try:
@@ -142,6 +146,10 @@ class ScenarioPanel(wx.Panel):
         print out
         self.parent.scenario = 0
         wx.MessageBox("Der Originalzustand des Systems ist wiederhergestellt.")
+
+    def OnStop(self,event):
+        self.watch.Pause()
+        self.endOfDrillFailed()
 
     def OnBack(self,event):
         self.parent.scenario = 0
