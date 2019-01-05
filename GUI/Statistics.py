@@ -9,7 +9,7 @@ NO_SCENARIOS = 3
 
 import wx
 import jsonpickle
-import sys
+import sys, os
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -21,7 +21,8 @@ class Stat(object):
 def sendStats(scenario,time):
     curStat = Stat(scenario,time)
     try:
-        f = open(STORE_PATH+"/stats.json", 'ab+')
+        path = os.path.join(STORE_PATH, 'stats.json')
+        f = open(path, 'ab+')
     except:
         wx.MessageBox("The shared folder path is not specified yet. Please change that in the source code.")
         return
@@ -41,7 +42,8 @@ def makeGraph():
 
     # decode collected stats from json file
     try:
-        f = open(STORE_PATH+"/stats.json",'rb')
+        path = os.path.join(STORE_PATH, 'stats.json')
+        f = open(path,'rb')
     except:
         wx.MessageBox("The shared folder path is not specified yet. Please change that in the source code.")
         return

@@ -6,7 +6,8 @@ import wx
 import Statistics
 import Drill
 import jsonpickle
-import sys
+import sys, os
+import subprocess
 
 class ScenarioJSON(object):
     def __init__ (self,description,hints):
@@ -23,7 +24,9 @@ class ScenarioPanel(wx.Panel):
 
         self.makeButtons()
 
-        self.hints, description = self.loadJSON(self.parent.scenario)
+        self.scenario=self.parent.scenario
+
+        self.hints, description = self.loadJSON()
         self.noHints = 0
         wx.StaticText(self,-1,description,(25,25))
 
@@ -41,9 +44,9 @@ class ScenarioPanel(wx.Panel):
         self.hintButton.Disable()
         self.endDrillButton.Disable()
 
-    def loadJSON(self,scenario):
+    def loadJSON(self):
         # decode scenario info from json file
-        path = "scenarios/"+str(scenario)+"/info.json"
+        path = os.path.join('scenarios', str(self.scenario), 'info.json')
         print path
         try:
             f = open(path,'rb')
@@ -72,6 +75,10 @@ class ScenarioPanel(wx.Panel):
 
         
     def OnStartDrill(self,event):
+        path = os.path.join('scenarios', str(self.scenario), 'startDrill.bat')
+        print path
+        out = subprocess.check_output(path,shell=True)
+        print out
         dlg = wx.MessageDialog(self,"Im System ist etwas kaputt gegangen. Finde heraus, was es ist, und bringe es wieder zum laufen!")
         response = dlg.ShowModal()
         if response==wx.ID_OK:
