@@ -28,7 +28,7 @@ class DrillPanel(wx.Panel):
         self.Bind(wx.EVT_BUTTON, self.OnViewDrill, self.Drill3Button)
         self.Bind(wx.EVT_BUTTON, self.OnExplore, self.exploreButton)
 
-    # Einfuehrungsding von Leo
+    # Einfuehrung in Oracle
     def OnExplore(self,event):
 	def IntroDialog(Intro):
 		frame = wx.Frame(None, -1, 'win.py')

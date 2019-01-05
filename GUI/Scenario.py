@@ -5,6 +5,13 @@ Handles the scenario panel of the app -> start new Drill etc
 import wx
 import Statistics
 import Drill
+import jsonpickle
+import sys
+
+class ScenarioJSON(object):
+    def __init__ (self,description,hints):
+        self.description = description
+        self.hints = hints
 
 class ScenarioPanel(wx.Panel):
 
@@ -16,10 +23,8 @@ class ScenarioPanel(wx.Panel):
 
         self.makeButtons()
 
-        self.hints = self.loadHints(self.parent.scenario)
+        self.hints, description = self.loadJSON(self.parent.scenario)
         self.noHints = 0
-
-        description = self.loadDescription(self.parent.scenario)
         wx.StaticText(self,-1,description,(25,25))
 
 
@@ -36,16 +41,22 @@ class ScenarioPanel(wx.Panel):
         self.hintButton.Disable()
         self.endDrillButton.Disable()
 
-    def loadHints(self,scenario):
-        # do someting with json files here, or hardcode
-        print scenario
-        example = ["Hint No. 1", "Hint No. 2", "Hint No.3"]
-        return example
-
-    def loadDescription(self,scenario):
-        # do something with json files here, or hardcode
-        example = "In diesem Szenario hat die Datenbank Hunger und moechte gefuettert werden.\nDafuer gibt es verschiedene Wege und verschiedene Ursachen."
-        return example
+    def loadJSON(self,scenario):
+        # decode scenario info from json file
+        path = "scenarios/"+str(scenario)+"/info.json"
+        print path
+        try:
+            f = open(path,'rb')
+        except:
+            wx.MessageBox("Something went wrong. Maybe the file is non-existent? Please contact the developers.")
+            return
+        json_str = f.read()
+        try:
+            dec_scenario = jsonpickle.decode(json_str)
+        except:
+            sys.stderr.write('Could not decode the info file.\n')
+            return
+        return dec_scenario.hints, dec_scenario.description
 
     # Supposed to get the right UseCase, display according hints
     def OnHint(self,event):

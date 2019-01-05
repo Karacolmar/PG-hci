@@ -24,11 +24,9 @@ class FiredrillFrame(wx.Frame):
         self.statPanel.Hide()
 
     def makeMenuBar(self):
-        # The "\t..." syntax defines an accelerator key that also triggers the same event:
-        # helloItem = fileMenu.Append(-1, "&Hello...\tCtrl-H","Help string shown i400 status bar for this menu item")
 
         statsMenu = wx.Menu()
-        timesItem = statsMenu.Append(wx.ID_ANY, "&Statistik anzeigen...\tCtrl-D")
+        timesItem = statsMenu.Append(wx.ID_ANY, "&Statistik anzeigen...")
 
         helpMenu = wx.Menu()
         aboutItem = helpMenu.Append(wx.ID_ABOUT)
