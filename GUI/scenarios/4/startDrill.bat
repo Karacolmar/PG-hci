@@ -1,3 +1,3 @@
 echo "Verbindungsproblem"
 @echo off
-net stop OracleServiceKHV
+lsnrctl stop
