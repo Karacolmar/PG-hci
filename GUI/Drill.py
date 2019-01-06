@@ -141,5 +141,4 @@ class DrillPanel(wx.Panel):
         self.parent.scenario = event.GetId()
         self.scenarioPanel=Scenario.ScenarioPanel(self.parent)
         self.scenarioPanel.Show()
-
-
+        self.Hide()
