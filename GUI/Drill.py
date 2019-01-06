@@ -36,7 +36,7 @@ class DrillPanel(wx.Panel):
 		x = ""
 		# Installationspfad
 		if Intro == 1:
-			dlg = wx.TextEntryDialog(frame, 'Finden Sie heraus wo Oracle installiert wurde','Einleitung 1/4')
+			dlg = wx.TextEntryDialog(frame, 'Finden Sie heraus wo Oracle installiert wurde($ORACLE_BASE).','Einleitung 1/4')
 			dlg.SetValue("C:\\")
 			result = dlg.ShowModal()
 			if result == wx.ID_OK:
@@ -47,7 +47,7 @@ class DrillPanel(wx.Panel):
 
 		#Homeverzeichnis
 		if Intro == 2:
-			dlg = wx.TextEntryDialog(frame, 'Wo liegt das Homeverzeichnis unserer Datenbank?','Einleitung 2/4')
+			dlg = wx.TextEntryDialog(frame, 'Wo liegt das Oracle-Homeverzeichnis $ORACLE_HOME?','Einleitung 2/4')
 			dlg.SetValue("C:\\app\\ora12")
 			result = dlg.ShowModal()
 			if result == wx.ID_OK:
@@ -59,8 +59,8 @@ class DrillPanel(wx.Panel):
 
 		#Datentypen
 		if Intro == 3:
-			dlg = wx.TextEntryDialog(frame, 'Wo liegen die menschenlesbaren Controlfiles?','Einleitung 3/4')
-			dlg.SetValue("C:\\app\\ora12")
+			dlg = wx.TextEntryDialog(frame, 'Wo liegen die menschenlesbaren Parameterfiles?','Einleitung 3/4')
+			dlg.SetValue("D:\\oracle")
 			result = dlg.ShowModal()
 			if result == wx.ID_OK:
 			    x = dlg.GetValue()
@@ -88,7 +88,7 @@ class DrillPanel(wx.Panel):
 	result = dlg.ShowModal()
 	 
 	if result == wx.ID_OK:
-		wx.MessageBox("Bei Oracle wird in Instanzen und Datenbanken getrennt.\nMehrere Versionen von Oracle koennen installiert und ueber verschiedene Instanzen benutzt werden.\nDer Name der Instanz ist innerhalb unseres Firedrills die SID",'Einleitung 1/4', wx.OK)
+		wx.MessageBox("Die Oraclesoftware trennt zwischen Datenbanksystem und Instanzen. \nMehrere Versionen von Oracle koennen so installiert und fuer verschiedene Instanzen benutzt werden.\nDie Instanz innerhalb unseres Firedrills ist KHV.",'Einleitung 1/4', wx.OK)
 		while 1:
 			Pfad = IntroDialog(1)	    	
 			if  Pfad == "C:\\app\\ora12":
@@ -98,11 +98,11 @@ class DrillPanel(wx.Panel):
 			if Pfad == wx.ID_CANCEL:
 				print "## Einleitung: 1/4 Abbruch\n"
 				return
-		wx.MessageBox("Unterordner:\n\\product - Das ist der Ordner der installierten Datenbanken.\n\\inventory - Der Datenspeicherort \n\\admin - Hier liegen die Parameterfiles(pfile) und man kann Justierungen an den Instanzen vornehmen. \n\\diag - Speicherort der Logs und Traces.",'Einleitung 2/4', wx.OK)
+		wx.MessageBox("Unterordner:\n\\product - Beinhaltet installierte Datenbankensysteme.\n\\admin - Hier liegen die Parameterfiles(pfile) und man kann Justierungen an den Instanzen vornehmen. \n\\diag - Speicherort der Log- und Tracefiles.",'Einleitung 2/4', wx.OK)
 		
 		while 2:
 			Pfad = IntroDialog(2)
-			if  Pfad == "C:\\app\\ora12":
+			if  Pfad == "C:\\app\\ora12\\product\\12.0.1\\db_1":
 				print "## Einleitung: OracleHome OK\n"
 				
 				break
@@ -113,14 +113,14 @@ class DrillPanel(wx.Panel):
 
 		while 3:
 			Pfad = IntroDialog(3)
-			if  Pfad == "C:\\app\\ora12":
+			if  Pfad == "D:\\oracle\\admin\\khv\\pfile":
 				print "## Einleitung: pfilespfad OK\n"
 				
 				break
 		if Pfad == wx.ID_CANCEL:
 				print "## Einleitung: 3/4 Abbruch\n"
 				return
-		wx.MessageBox("Oracle hat seine eigene Speicherstruktur, was es Betriebssystemuebergreifend macht.\nDie kleinste Einheit ist ein OSBlock = 4KB.\nDanach gibt es die Oraclebloecke, Extents, Segments und den Tablespace.\nTablespaces definieren die Datenmenge der Instanz und werden normalerweise nach einem Muster (Bspw.: \"dfSID01.dbf\") nummeriert",'Einleitung 4/4', wx.OK)
+		wx.MessageBox("Oracle hat eine eigene Speicherstruktur.\nDie kleinste Einheit ist ein OSBlock.\nDanach gibt es die Oraclebloecke, Extents, Segments und die Tablespaces.\nTablespaces definieren die Datenmenge der Instanz und werden normalerweise nach einem Muster (Bspw.: \"dfSID01.dbf\") benannnt",'Einleitung 4/4', wx.OK)
 		while 4:
 			Pfad = IntroDialog(4)
 			if  Pfad == "1024":
