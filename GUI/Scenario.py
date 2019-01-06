@@ -16,11 +16,13 @@ class ScenarioJSON(object):
 
 class ScenarioPanel(wx.Panel):
 
-    def __init__(self, parent):
+    def __init__(self, parent, drillPanel):
         
         wx.Panel.__init__ ( self, parent, id = wx.ID_ANY, pos = wx.DefaultPosition, size=parent.GetSize(), style = wx.TAB_TRAVERSAL )
 
         self.parent = parent
+
+        self.drillPanel = drillPanel
 
         self.makeButtons()
 
@@ -155,6 +157,7 @@ class ScenarioPanel(wx.Panel):
     def OnBack(self,event):
         self.parent.scenario = 0
         self.Hide()
+        self.drillPanel.Show()
 
 
 
