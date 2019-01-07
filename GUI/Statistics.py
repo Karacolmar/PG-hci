@@ -3,7 +3,7 @@ Statistics handler. Stores past times, able to display them, etc.
 '''
 
 # change this into real shared folder!
-STORE_PATH = "../../../shared_folder"
+STORE_PATH = "F:\repo\PG-hci"
 # change if more scenarios are added
 NO_SCENARIOS = 3
 
