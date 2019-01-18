@@ -148,7 +148,7 @@ class ScenarioPanel(wx.Panel):
         print path
         out = subprocess.check_output(path,shell=True)
         print out
-        Statistics.sendStats(self,self.parent.scenario,self.curTime, self.noHints, self.end_drills, 0)
+        Statistics.sendStats(self,self.parent.scenario, None , self.noHints, self.end_drills, 0)
         self.parent.scenario = 0
         wx.MessageBox("Der Originalzustand des Systems ist wiederhergestellt.")
 

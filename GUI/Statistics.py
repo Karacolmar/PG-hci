@@ -111,11 +111,15 @@ class StatisticsPanel(wx.Panel):
             ymax = 0
             bins=[[] for i in range(NO_SCENARIOS)]
             for stat in dec_stats:
-                # time is given in ms, converting to minutes
-                conv = (stat.time/60000)%60
-                bins[stat.scenario-1].append(conv)
-                if conv > ymax:
-                    ymax = conv
+                if stat.time:
+                    # time is given in ms, converting to minutes
+                    conv = (stat.time/60000)%60
+                    bins[stat.scenario-1].append(conv)
+                    if conv > ymax:
+                        ymax = conv
+                else:
+                    # failed trial, will not appear in graph
+                    pass
             print ymax
 
             # prepare x axis, maybe this is not neeeded!
