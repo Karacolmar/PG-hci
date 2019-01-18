@@ -134,7 +134,6 @@ class ScenarioPanel(wx.Panel):
         dlg.SetHelpLabel("&Benoetigte Zeit anzeigen")
         response = dlg.ShowModal()
         Statistics.sendStats(self,self.parent.scenario,self.curTime, self.noHints, self.end_drills, 1)
-        Statistics.sendStats(self, 1)
         self.parent.scenario = 0
         print self.curTime  
         if  response==wx.ID_HELP:
@@ -150,7 +149,6 @@ class ScenarioPanel(wx.Panel):
         out = subprocess.check_output(path,shell=True)
         print out
         Statistics.sendStats(self,self.parent.scenario,self.curTime, self.noHints, self.end_drills, 0)
-        Statistics.sendStats(self, 0)
         self.parent.scenario = 0
         wx.MessageBox("Der Originalzustand des Systems ist wiederhergestellt.")
 
