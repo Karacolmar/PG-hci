@@ -133,6 +133,7 @@ class ScenarioPanel(wx.Panel):
         dlg=wx.MessageDialog(self,"Das System ist wieder in Ordnung.","In Ordnung", wx.HELP)
         dlg.SetHelpLabel("&Benoetigte Zeit anzeigen")
         response = dlg.ShowModal()
+        Statistics.sendStats(self,self.parent.scenario,self.curTime, self.noHints, self.end_drills, 1)
         Statistics.sendStats(self, 1)
         self.parent.scenario = 0
         print self.curTime  
@@ -148,6 +149,7 @@ class ScenarioPanel(wx.Panel):
         print path
         out = subprocess.check_output(path,shell=True)
         print out
+        Statistics.sendStats(self,self.parent.scenario,self.curTime, self.noHints, self.end_drills, 0)
         Statistics.sendStats(self, 0)
         self.parent.scenario = 0
         wx.MessageBox("Der Originalzustand des Systems ist wiederhergestellt.")

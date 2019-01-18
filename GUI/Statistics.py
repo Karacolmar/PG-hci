@@ -41,10 +41,8 @@ def specifyStorePath(parent,path):
             f = open(path,'w+')
     f.close()
     
-
-def sendStats(parent, succ):
-    #stats all in parentobject
-    curStat = Stat(parent.parent.scenario, parent.time, parent.noHints, parent.end_drills, succ)
+def sendStats(parent,scenario,time, hints_needed, times_ended, succ):
+    curStat = Stat(scenario,time, hints_needed, times_ended, succ)
     path = os.path.join(STORE_PATH, 'stats.json')
 
     if not os.path.isfile(path):
