@@ -3,7 +3,7 @@ Statistics handler. Stores past times, able to display them, etc.
 '''
 
 # change this into real shared folder!
-STORE_PATH = "../../../shared_folder"
+STORE_PATH = "F:\repo\PG-hci"
 # change if more scenarios are added
 NO_SCENARIOS = 3
 
@@ -14,9 +14,12 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 class Stat(object):
-    def __init__ (self,scenario,time):
+    def __init__ (self,scenario,time, noHints, end_drills, succ):
         self.scenario = scenario
         self.time = time
+        self.noHints = noHints # number of Hints used
+        self.end_drills = end_drills #number of times endDrill was pressed
+        self.succ = succ #success or not
 
 def specifyStorePath(parent,path):
     global STORE_PATH
@@ -39,8 +42,9 @@ def specifyStorePath(parent,path):
     f.close()
     
 
-def sendStats(parent,scenario,time):
-    curStat = Stat(scenario,time)
+def sendStats(parent, succ):
+    #stats all in parentobject
+    curStat = Stat(parent.parent.scenario, parent.time, parent.noHints, parent.end_drills, succ)
     path = os.path.join(STORE_PATH, 'stats.json')
 
     if not os.path.isfile(path):

@@ -26,10 +26,11 @@ class ScenarioPanel(wx.Panel):
 
         self.makeButtons()
 
-        self.scenario=self.parent.scenario
+        self.scenario = self.parent.scenario
 
         self.hints, description = self.loadJSON()
         self.noHints = 0
+        self.end_drills = 0
         wx.StaticText(self,-1,description,(25,25))
 
 
@@ -104,6 +105,7 @@ class ScenarioPanel(wx.Panel):
             if wait==wx.ID_CANCEL:
                 self.watch.Resume()
             else:
+                self.end_drills += 1
                 path = os.path.join('scenarios', str(self.scenario), 'checkSystem.bat')
                 print path
                 out = subprocess.check_output(path,shell=True)
@@ -131,8 +133,7 @@ class ScenarioPanel(wx.Panel):
         dlg=wx.MessageDialog(self,"Das System ist wieder in Ordnung.","In Ordnung", wx.HELP)
         dlg.SetHelpLabel("&Benoetigte Zeit anzeigen")
         response = dlg.ShowModal()
-
-        Statistics.sendStats(self,self.parent.scenario,self.curTime)
+        Statistics.sendStats(self, 1)
         self.parent.scenario = 0
         print self.curTime  
         if  response==wx.ID_HELP:
@@ -147,6 +148,7 @@ class ScenarioPanel(wx.Panel):
         print path
         out = subprocess.check_output(path,shell=True)
         print out
+        Statistics.sendStats(self, 0)
         self.parent.scenario = 0
         wx.MessageBox("Der Originalzustand des Systems ist wiederhergestellt.")
 
