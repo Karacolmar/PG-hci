@@ -1,11 +1,9 @@
-'''
-Statistics handler. Stores past times, able to display them, etc.
-'''
-
-# change this into real shared folder!
-STORE_PATH = "F:\repo\PG-hci"
-# change if more scenarios are added
-NO_SCENARIOS = 3
+############################################################################
+#
+# This file handles the statistics.
+# Classes Stat and StatisticsPanel.
+#
+##############################################################################
 
 import wx
 import jsonpickle
@@ -13,6 +11,12 @@ import sys, os
 import matplotlib.pyplot as plt
 import numpy as np
 
+# change this into actual shared folder!
+STORE_PATH = "F:\repo\PG-hci"
+# change if more scenarios are added
+NO_SCENARIOS = 3
+
+# Class for JSON
 class Stat(object):
     def __init__ (self,scenario,time, noHints, end_drills, succ):
         self.scenario = scenario
@@ -21,16 +25,18 @@ class Stat(object):
         self.end_drills = end_drills #number of times endDrill was pressed
         self.succ = succ #success or not
 
+# If we run into an error while trying to open the stats.json file, this function asks for the path to it. However, the path does not change permanently.
+# Later, we should handle the path through a .config file, but for now, it is kept in a global variable above. To change it permanently, you have to change it in the code.
 def specifyStorePath(parent,path):
     global STORE_PATH
-    dlg = wx.MessageDialog(parent,"Der spezifizierte Pfad des shared folders ist "+STORE_PATH+".\n Ist dies richtig?", "Fehler...",wx.YES_NO | wx.ICON_ERROR)
+    dlg = wx.MessageDialog(parent,"Der angegebene Pfad des shared folders ist "+STORE_PATH+".\n Ist dies richtig?", "Fehler...",wx.YES_NO | wx.ICON_ERROR)
     wait = dlg.ShowModal()
     if wait==wx.ID_YES:
         if not os.path.exists(STORE_PATH):
             os.makedirs(STORE_PATH)
         f = open(path, 'w+')
     else:
-        dlg = wx.TextEntryDialog(parent, 'Bitte spezifizieren Sie den Pfad des shared folders: ','Shared folder')
+        dlg = wx.TextEntryDialog(parent, 'Bitte geben Sie den Pfad des shared folders an: ','Shared folder')
         dlg.SetValue("C:\\")
         result = dlg.ShowModal()
         if result == wx.ID_OK:
@@ -41,6 +47,7 @@ def specifyStorePath(parent,path):
             f = open(path,'w+')
     f.close()
     
+# This function writes the Statistics object into a JSON file
 def sendStats(parent,scenario,time, hints_needed, times_ended, succ):
     curStat = Stat(scenario,time, hints_needed, times_ended, succ)
     path = os.path.join(STORE_PATH, 'stats.json')
@@ -62,8 +69,7 @@ def sendStats(parent,scenario,time, hints_needed, times_ended, succ):
         f.write(']'.encode())    
     f.close()
 
-
-
+# This class handles the Statistics Panel i.e. it generates and shows the graph
 class StatisticsPanel(wx.Panel):
 
     def __init__(self, parent):
@@ -78,6 +84,7 @@ class StatisticsPanel(wx.Panel):
     def OnBack(self,event):
         self.Hide()
 
+    # this method needs to be called before showing the panel, otherwise it will be empty / the graph will be outdated
     def Update(self):
         ok = self.makeGraph()
         if ok:
@@ -111,6 +118,7 @@ class StatisticsPanel(wx.Panel):
             ymax = 0
             bins=[[] for i in range(NO_SCENARIOS)]
             for stat in dec_stats:
+                # why don't we make this distinction based on stat.succ?
                 if stat.time:
                     # time is given in ms, converting to minutes
                     conv = (stat.time/60000)%60
@@ -130,14 +138,16 @@ class StatisticsPanel(wx.Panel):
             print xmax
 
             # actually make the graph
-            # !!! THIS IS HARDCODED !!!
             fig, ax = plt.subplots ()
             ax.set_xlabel('Anzahl der bisher absolvierte Drills')
             ax.set_ylabel('benoetigte Zeit in Minuten')
             ax.set_title('Firedrill: Statistik')
+
+            # append a new scenario here
             ax.plot(bins[0], 'bo', linestyle = 'dotted', label='Verbindungsprobleme')
             ax.plot(bins[1], 'go', linestyle = 'dotted', label='fehlendes Datenfile')
             ax.plot(bins[2], 'ro', linestyle = 'dotted', label='Tablespace')
+
             ax.set_xlim(0.8,xmax+0.2)
             ax.set_ylim(-0.2,ymax+2)
             xticks = [i+1 for i in range(xmax)]

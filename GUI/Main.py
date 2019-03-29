@@ -1,24 +1,33 @@
 #!/bin/python
 
+###########################################################################################################
+#
+# This will create the Frame for the Tool. It sets the menu bar and sets up the Panels.
+# Also, ths class keeps track of the current scenario so both DrillPanel and StatisticsPanel can access it.
+#
+###########################################################################################################
+
 import wx
 import Statistics
 import Drill
-import Scenario
 
 class FiredrillFrame(wx.Frame):
 
     def __init__(self, *args, **kw):
-        # ensure the parent's __init__ is called
         super(FiredrillFrame, self).__init__(*args, **kw)
 
         self.SetSize((680, 580))
         self.Centre()
 
+        # keep track of the current scenario: 0 means none
+        # this variable is modified and accessed by both DrillPanel and StatisticsPanel
         self.scenario = 0
 
-        # create a menu bar
         self.makeMenuBar()
- 
+
+        # Link both panels and hide the statistics panel. 
+        # DrillPanel contains the buttons for the scenarios and is the starting point for doing a firedrill
+        # StatisticsPanel accesses the shared folder specified in Statistics.py and plots a graph
         self.mainPanel = Drill.DrillPanel(self)
         self.statPanel=Statistics.StatisticsPanel(self)        
         self.statPanel.Hide()
@@ -48,7 +57,7 @@ class FiredrillFrame(wx.Frame):
         self.Bind(wx.EVT_MENU, self.OnTimes, timesItem)
 
     def OnTimes(self,event):
-        # Supposed to display new frame/module/etc showing statistics of different kinds?
+        # Shows the statistics panel: plot new graph from data in shared folder specified in Statistics.py and show it
         self.statPanel.Update()
         self.statPanel.Show()
 
