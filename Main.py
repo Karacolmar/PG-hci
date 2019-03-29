@@ -25,11 +25,11 @@ class FiredrillFrame(wx.Frame):
 
         self.makeMenuBar()
 
-        # Link both panels and hide the statistics panel. 
+        # Link both panels and hide the statistics panel.
         # DrillPanel contains the buttons for the scenarios and is the starting point for doing a firedrill
         # StatisticsPanel accesses the shared folder specified in Statistics.py and plots a graph
         self.mainPanel = Drill.DrillPanel(self)
-        self.statPanel=Statistics.StatisticsPanel(self)        
+        self.statPanel = Statistics.StatisticsPanel(self)
         self.statPanel.Hide()
 
     def makeMenuBar(self):
@@ -52,11 +52,11 @@ class FiredrillFrame(wx.Frame):
         # Finally, associate a handler function with the EVT_MENU event for
         # each of the menu items. That means that when that menu item is
         # activated then the associated handler function will be called.
-        self.Bind(wx.EVT_MENU, self.OnExit,  exitItem)
+        self.Bind(wx.EVT_MENU, self.OnExit, exitItem)
         self.Bind(wx.EVT_MENU, self.OnAbout, aboutItem)
         self.Bind(wx.EVT_MENU, self.OnTimes, timesItem)
 
-    def OnTimes(self,event):
+    def OnTimes(self, event):
         # Shows the statistics panel: plot new graph from data in shared folder specified in Statistics.py and show it
         self.statPanel.Update()
         self.statPanel.Show()
