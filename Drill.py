@@ -41,7 +41,75 @@ class DrillPanel(wx.Panel):
     # Einfuehrung in Oracle (Leo)
     # needs restructuring
     def OnExplore(self,event):
-    def IntroDialog(Intro):
+
+        dlg = wx.MessageDialog(self, "Es folgt eine kurze allgemeine Einleitung in Oracle",'Einleitung',wx.CANCEL | wx.ICON_INFORMATION)
+        result = dlg.ShowModal()
+        
+        if result == wx.ID_OK:
+            wx.MessageBox("Die Oraclesoftware trennt zwischen Datenbanksystem und Instanzen. \n"
+                          "Mehrere Versionen von Oracle koennen so installiert und fuer verschiedene Instanzen benutzt werden.\n"
+                          "Die Instanz innerhalb unseres Firedrills ist KHV.",'Einleitung 1/4', wx.OK)
+            while 1:
+                Pfad = self.IntroDialog(1)	    	
+                if  Pfad == "C:\\app\\ora12":
+                    print "## Einleitung: Installationspfad OK\n"
+                    
+                    break	
+                if Pfad == wx.ID_CANCEL:
+                    print "## Einleitung: 1/4 Abbruch\n"
+                    return
+            wx.MessageBox("Unterordner:\n\\product - Beinhaltet installierte Datenbankensysteme.\n"
+                          "\\admin - Hier liegen die Parameterfiles(pfile) und man kann Justierungen an den Instanzen vornehmen. \n"
+                          "\\diag - Speicherort der Log- und Tracefiles.",'Einleitung 2/4', wx.OK)
+            
+            while 2:
+                Pfad = self.IntroDialog(2)
+                if  Pfad == "C:\\app\\ora12\\product\\12.0.1\\db_1":
+                    print "## Einleitung: OracleHome OK\n"
+                    
+                    break
+                if Pfad == wx.ID_CANCEL:
+                    print "## Einleitung: 2/4 Abbruch\n"
+                    return	
+            wx.MessageBox("5 wichtige Dateitypen\n"
+                          "Datafiles: Daten\n"
+                          "Controlfiles: 2-3 je Installation, in verschiedenen Orten (menschenlesbar: pfiles)\n"
+                          "Redologfiles: Transaktionsfiles als Rollbackanleitung\n"
+                          "Achivelogfiles: archivierte Redologfiles, Lebensdauer ist bis Vollsicherung\n"
+                          "Tracefiles: andere Logdateien",'Einleitung 3/4', wx.OK)
+
+            while 3:
+                Pfad = self.IntroDialog(3)
+                if  Pfad == "D:\\oracle\\admin\\khv\\pfile":
+                    print "## Einleitung: pfilespfad OK\n"
+                    
+                    break
+            if Pfad == wx.ID_CANCEL:
+                    print "## Einleitung: 3/4 Abbruch\n"
+                    return
+            wx.MessageBox("Oracle hat eine eigene Speicherstruktur.\n"
+                          "Die kleinste Einheit ist ein OSBlock.\n"
+                          "Danach gibt es die Oraclebloecke, Extents, Segments und die Tablespaces.\n"
+                          "Tablespaces definieren die Datenmenge der Instanz und werden normalerweise nach einem Muster (Bspw.: \"dfSID01.dbf\") benannnt",
+                          'Einleitung 4/4', wx.OK)
+            while 4:
+                Pfad = self.IntroDialog(4)
+                if  Pfad == "1024":
+                    print "## Einleitung: Speicher OK\n"
+                    
+                    break
+            if Pfad == wx.ID_CANCEL:
+                    print "## Einleitung: 4/4 Abbruch\n"
+                    return	
+        else:
+            print "## Einleitung: 0/4 Abbruch"
+            return
+            
+        print "## Einleitung: erfolgreich beendet"
+        return
+
+
+    def IntroDialog(self, Intro):
         frame = wx.Frame(None, -1, 'win.py')
         frame.SetDimensions(0,0,200,50)
         x = ""
@@ -94,59 +162,6 @@ class DrillPanel(wx.Panel):
             return "MEHR"
         dlg.Destroy()
         return x
-
-        dlg = wx.MessageDialog(self, "Es folgt eine kurze allgemeine Einleitung in Oracle",'Einleitung',wx.CANCEL | wx.ICON_INFORMATION)
-    result = dlg.ShowModal()
-     
-    if result == wx.ID_OK:
-        wx.MessageBox("Die Oraclesoftware trennt zwischen Datenbanksystem und Instanzen. \nMehrere Versionen von Oracle koennen so installiert und fuer verschiedene Instanzen benutzt werden.\nDie Instanz innerhalb unseres Firedrills ist KHV.",'Einleitung 1/4', wx.OK)
-        while 1:
-            Pfad = IntroDialog(1)	    	
-            if  Pfad == "C:\\app\\ora12":
-                print "## Einleitung: Installationspfad OK\n"
-                
-                break	
-            if Pfad == wx.ID_CANCEL:
-                print "## Einleitung: 1/4 Abbruch\n"
-                return
-        wx.MessageBox("Unterordner:\n\\product - Beinhaltet installierte Datenbankensysteme.\n\\admin - Hier liegen die Parameterfiles(pfile) und man kann Justierungen an den Instanzen vornehmen. \n\\diag - Speicherort der Log- und Tracefiles.",'Einleitung 2/4', wx.OK)
-        
-        while 2:
-            Pfad = IntroDialog(2)
-            if  Pfad == "C:\\app\\ora12\\product\\12.0.1\\db_1":
-                print "## Einleitung: OracleHome OK\n"
-                
-                break
-            if Pfad == wx.ID_CANCEL:
-                print "## Einleitung: 2/4 Abbruch\n"
-                return	
-        wx.MessageBox("5 wichtige Dateitypen\nDatafiles: Daten\nControlfiles: 2-3 je Installation, in verschiedenen Orten (menschenlesbar: pfiles)\nRedologfiles: Transaktionsfiles als Rollbackanleitung\nAchivelogfiles: archivierte Redologfiles, Lebensdauer ist bis Vollsicherung\nTracefiles: andere Logdateien",'Einleitung 3/4', wx.OK)
-
-        while 3:
-            Pfad = IntroDialog(3)
-            if  Pfad == "D:\\oracle\\admin\\khv\\pfile":
-                print "## Einleitung: pfilespfad OK\n"
-                
-                break
-        if Pfad == wx.ID_CANCEL:
-                print "## Einleitung: 3/4 Abbruch\n"
-                return
-        wx.MessageBox("Oracle hat eine eigene Speicherstruktur.\nDie kleinste Einheit ist ein OSBlock.\nDanach gibt es die Oraclebloecke, Extents, Segments und die Tablespaces.\nTablespaces definieren die Datenmenge der Instanz und werden normalerweise nach einem Muster (Bspw.: \"dfSID01.dbf\") benannnt",'Einleitung 4/4', wx.OK)
-        while 4:
-            Pfad = IntroDialog(4)
-            if  Pfad == "1024":
-                print "## Einleitung: Speicher OK\n"
-                
-                break
-        if Pfad == wx.ID_CANCEL:
-                print "## Einleitung: 4/4 Abbruch\n"
-                return	
-    else:
-        print "## Einleitung: 0/4 Abbruch"
-            return
-        
-    print "## Einleitung: erfolgreich beendet"
-        return
 
     # Depending on the Button pressed (i.e. its ID), set the scenario variable of FiredrillFrame and create a new scenario panel
     def OnViewDrill(self,event):
